@@ -8,14 +8,25 @@ class RestaurantsController < ApplicationController
   end
 
   def homepage
-    @dishes = Dish.all # order(:description)
     @restaurants = Restaurant.order(:name)
-    @ingredients = Ingredient.order(:description)
+    # filtragem por categoria
+    @restaurantsJoin = Restaurant.joins("INNER JOIN dishes ON dishes.restaurant_id = restaurants.id").distinct unless params[:category_id].blank?
+    @restaurants = @restaurantsJoin.where("category_id = :category", {category: params[:category_id]}) unless params[:category_id].blank?
+    # # uso do unless para exibir somente se não for vazio
+
+    # ## fazer o busca por termos
+    @restaurants = @restaurants.where('UPPER(name) LIKE ?', "%#{params[:term].upcase}%") unless params[:term].blank?
+    @restaurants = Restaurant.joins("INNER JOIN dishes ON dishes.restaurant_id = restaurants.id").distinct unless params[:term].blank?
+
   end
 
   # GET /restaurants/1
   # GET /restaurants/1.json
   def show
+    @dishes = Dish.all # order(:description)
+    @restaurants = Restaurant.order(:name)
+    @ingredients = Ingredient.order(:description)
+    @categories = Category.all
   end
 
   # GET /restaurants/new

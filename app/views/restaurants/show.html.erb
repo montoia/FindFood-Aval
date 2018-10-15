@@ -1,19 +1,49 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @restaurant.name %>
-</p>
+<div class="text-center">
+  <h1 class="jumbotron-heading"><%= @restaurant.name %></h1>
 
 <p>
-  <strong>Telephone:</strong>
+  <strong>Telefone:</strong>
   <%= @restaurant.telephone %>
 </p>
 
 <p>
-  <strong>Address:</strong>
+  <strong>Endereço:</strong>
   <%= @restaurant.address %>
 </p>
 
-<%= link_to 'Edit', edit_restaurant_path(@restaurant) %> |
-<%= link_to 'Back', restaurants_path %>
+<%= link_to 'Voltar', root_path %>
+</div>
+
+<div id="plates">
+  <ul class="plates_itens">
+    <% if not @restaurant.dishes.blank? %>
+      <% @restaurant.dishes.each do |plate| %>
+        <div class="col-md-4">
+        <div class="card mb-4 shadow-sm jumbotron">
+          <div class="title card-body">
+            <div class="name">Categoria: <%= plate.category.description %></div>
+            <div class="name"><%= plate.name %></div>
+            <div class="price">R$ <b><%= plate.price %>0</b></div>
+          </div>
+          <div class="info">
+            <div class="ingredients">Ingredientes:
+              <span><br/>
+                   <ul>
+                      <% plate.ingredients.order(:description).each do | ingredient| %>
+                      <li><%= ingredient.description%></li>
+                      <% end %>
+                   </ul>
+                   </span>
+            </div>
+            <div class="preparationtime"><b>Tempo de Preparo:</b> <%= plate.preparationtime.strftime("%H:%M") %>h</div>
+          </div>
+        </div>
+        </div>
+      <% end %>
+    <% else %>
+      <h2 class="text-center">Nenhum prato cadastrado.</h2>
+    <% end %>
+  </ul>
+</div>

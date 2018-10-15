@@ -1,39 +1,42 @@
-<p id="notice"><%= notice %></p>
-<div id="restaurante">
-  <% @restaurants.each do |restaurant| %>
-    <h1 class="nome"><%= restaurant.name %></h1>
-    <h2 class="endereco"><%= restaurant.address %></h2>
-    <h2 class="telefone">Telefone: <%= restaurant.telephone %></h2>
-  <% end %>
-</div>
-
-<div id="dish">
-  <ul class="dishes_itens">
-    <% @dishes.each do | dish| %>
-      <li class="dish_item">
-
-        <div class="titulo">
-          <div class="descricao"><%= dish.description %></div>
-          <div class="preco">R$ <b><%= dish.price %>0</b></div>
+<div class="row">
+  <p id="notice"><%= notice %></p>
+    <div id="restaurante" class="col-md-8 order-md-1">
+      <% if not @restaurants.blank? %>
+      <% @restaurants.each do |restaurant| %>
+        <h2><%= link_to restaurant.name, restaurant %></h2>
+        <hr>
+      <% end %>
+      <% else %>
+        <h2 class="text-center">Nenhum restaurante encontrado.</h2>
+      <% end %>
+    </div>
+    <div class="col-md-4 order-md-2 mb-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Categories</h3>
         </div>
-
-        <div class="info">
-          <div class="ingredientes">Ingredientes:
-            <span><br/>
-              <!--%= plate.ingredients.map(&:descricao).join(',') %-->
-                 <ul>
-                    <% plate.ingredients.order(:description).each do | ingredient| %>
-                    <li><%= ingredient.description%></li>
-                    <% end %>
-                 </ul>
-                 </span>
-          </div>
-
-          <div class="tempopreparo"><b>Tempo de Preparo:</b> <%= dish.preparationtime.strftime("%I:%M") %>h</div>
+        <div class="panel-body">
+          <ul>
+            <% Category.all.each do |category| %>
+              <li>
+                <%= link_to category.description, homepage_restaurants_path(category_id: category.id) %>
+              </li>
+            <% end %>
+          </ul>
         </div>
-        <div class="fotos">FOTO</div>
-        <!--div class="ingredientes">Ingredients: <!--%= plate.ingredients.sort_by { |h | h[:descricao] } %></div-->
-      </li>
-    <% end %>
-  </ul>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Search</h3>
+        </div>
+        <div class="panel-body">
+          <%= form_tag('/restaurants/homepage', method: 'post') do %>
+            <%= text_field_tag(:term) %>
+            <%= submit_tag('Buscar') %>
+          <% end %>
+
+        </div>
+      </div>
+    </div>
 </div>

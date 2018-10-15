@@ -1,5 +1,5 @@
 class Dish < ApplicationRecord
-  validates_presence_of :description
+  validates_presence_of :restaurant, :name, :ingredients, :category, :price
 
   belongs_to :restaurant
   belongs_to :category

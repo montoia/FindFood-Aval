@@ -10,13 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_02_010713) do
+ActiveRecord::Schema.define(version: 2018_10_09_182532) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "add_restaurant_id_to_dishes", force: :cascade do |t|
-  end
 
   create_table "categories", force: :cascade do |t|
     t.string "description"
@@ -30,6 +27,7 @@ ActiveRecord::Schema.define(version: 2018_10_02_010713) do
     t.time "preparationtime"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "category_id"
     t.integer "restaurant_id"
   end
 
